@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="edu.unsw.comp9321.hibernateBeans">
+	<class name="UserBean" table="User">
+        <id name="username" column="username">
+            <generator class="assigned"/>
+        </id>
+        <property name="password" not-null="true">
+        	<column name="password" sql-type="char(64)"/>
+        </property>
+        <property name="email" not-null="true" unique="true">
+        	<column name="email" check="(value like '%@%.%')"/>
+        </property>
+        <property name="nickname" not-null="false"/>
+        <property name="firstName" column="first_name" not-null="false"/>
+        <property name="lastName" column="last_name" not-null="false"/>
+        <property name="dateOfBirth" column="date_of_birth" not-null="false"/>
+        <property name="addressStreet" column="address_street" not-null="false"/>
+        <property name="addressCity" column="address_city" not-null="false"/>
+        <property name="addressState" column="address_state" not-null="false"/>
+        <property name="addressCountry" column="address_country" not-null="false"/>
+        <property name="addressPostcode" column="address_postcode" not-null="false"/>
+        <property name="creditCard">
+        	<column name="credit_card" sql-type="char(16)" not-null="false"/>
+        </property>
+        <property name="userStatus" column="status">
+        	<type name="org.hibernate.type.EnumType">
+         		<param name="enumClass">edu.unsw.comp9321.hibernateBeans.UserStatus</param>
+         		<param name="type">12</param>
+      		</type>
+        </property>
+        <property name="isAdmin" type="org.hibernate.type.NumericBooleanType">
+        	<column name="is_admin" sql-type="tinyint(1)" default="0"/>
+        </property>
+        <set name="wishlistItems" table="Wishlist" inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="username" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.unsw.comp9321.hibernateBeans.ItemBean">
+                <column name="item_id" not-null="true" />
+            </many-to-many>
+        </set>
+  </class>
+  
+</hibernate-mapping>

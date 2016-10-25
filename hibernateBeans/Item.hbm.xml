@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="edu.unsw.comp9321.hibernateBeans">
+	<class name="ItemBean" table="Item">
+        <id name="itemId" column="item_id">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="seller" class="UserBean" not-null="true" fetch="select" not-found="ignore" lazy="proxy"/>
+        <property name="title" not-null="true"/>
+        <property name="category" not-null="true">
+        	<type name="org.hibernate.type.EnumType">
+         		<param name="enumClass">edu.unsw.comp9321.hibernateBeans.Category</param>
+         		<param name="type">12</param>
+      		</type>
+        </property>
+        <property name="description" not-null="false"/>
+        <property name="picture" not-null="false"/>
+        <property name="currency" not-null="true">
+        	<type name="org.hibernate.type.EnumType">
+         		<param name="enumClass">edu.unsw.comp9321.hibernateBeans.Currency</param>
+         		<param name="type">12</param>
+      		</type>
+        </property>
+        <property name="reservePrice" not-null="true">
+        	<column name="reserve_price" sql-type="decimal(10,2)" check="(value >= 0)"/>
+        </property>
+        <property name="bidIncrements" not-null="true">
+        	<column name="bid_increments" sql-type="decimal(10,2)" check="(value > 0)"/>
+        </property>
+        <property name="bestBid" not-null="true">
+        	<column name="best_bid" sql-type="decimal(10,2)" check="(value >= 0)"/>
+        </property>
+        <property name="bestBidTime" column="best_bid_time" not-null="false"/>
+        <many-to-one name="bestBidder" column="best_bidder" class="UserBean" not-null="false" fetch="select" not-found="ignore" lazy="proxy"/>
+        <property name="endTime" column="end_time" not-null="true"/>
+         <property name="itemStatus" column="status" not-null="true">
+        	<type name="org.hibernate.type.EnumType">
+         		<param name="enumClass">edu.unsw.comp9321.hibernateBeans.ItemStatus</param>
+         		<param name="type">12</param>
+      		</type>
+        </property>
+       <!-- <set name="wishlistUsers" table="Wishlist" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="edu.unsw.comp9321.hibernateBeans.UserBean">
+                <column name="username" not-null="true" />
+            </many-to-many>
+        </set> -->
+    </class>
+</hibernate-mapping>

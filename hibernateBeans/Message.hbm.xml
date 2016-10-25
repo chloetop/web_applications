@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="edu.unsw.comp9321.hibernateBeans">
+	<class name="MessageBean" table="Message">
+		<id name="messageId" column="message_id">
+		    <generator class="identity"/>
+		</id>
+		<property name="subject" not-null="false"/>
+		<property name="content" not-null="false"/>
+		<many-to-one name="user" column="username" class="UserBean" not-null="false"  fetch="select" not-found="ignore" lazy="proxy"/>
+		<property name="insertTime" column="insert_time" not-null="false"/>
+		<property name="status" not-null="false"/>
+   </class>
+</hibernate-mapping>
